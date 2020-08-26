@@ -1,0 +1,6 @@
+<h2>Edit movie list</h2>
+<form action="/lists/<%= list.id %>?_method=PUT" method="POST">
+    <%- include('_form_fields') %> 
+    <a href="/lists/<%= list.id %> ">Cancel</a>
+    <button type="submit">Update list</button>
+</form>

@@ -1,0 +1,25 @@
+<h2>Movies</h2>
+<form action="/movies" method="GET">
+    <label>Title</label>
+    <input type="text" name="title" value="<%= searchOptions.title %>">
+    <label>Director</label>
+    <input type="text" name="director" value="<%= searchOptions.director %>">
+    <label>Genre</label>
+    <input type="text" name="genre" value="<%= searchOptions.genre %>">
+    <br>
+    <label>Released after</label>
+    <input type="date" name="releasedAfter" value="<%= searchOptions.releasedAfter %>">
+    <label>Release before</label>
+    <input type="date" name="releasedBefore" value="<%= searchOptions.releasedBefore %>">
+    <button type="submit">Search</button>
+</form>
+<br>
+<br>
+<% movies.forEach(movie => { %>
+    <div>
+        <%= movie.title %> 
+        <a href="/movies/<%= movie.id %>">View</a>
+        <a href="/movies/<%= movie.id %>/edit">Edit</a>
+        <%- include('../partials/deleteForm', { url: `/movies/${movie.id}`}) %> 
+    </div>
+<% }) %>

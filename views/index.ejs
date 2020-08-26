@@ -1,0 +1,31 @@
+<% if(recentlyAddedMovies.length >= 1) { %> 
+    <hr>
+    <div>
+        <h2>Recently Added Movies</h2>
+        <div> 
+        <% recentlyAddedMovies.forEach(recentMovie => { %>
+            <div>
+                <h4><%= recentMovie.title %></h4>
+                <a href="/movies/<%= recentMovie.id %>">View</a>
+            </div>
+        <% }) %>
+        </div> 
+    </div>
+    <hr>
+<% } %>
+<% lists.forEach(list => { %>
+    <div>
+        <h2><%= list.name %></h2>
+        <div>
+        <% movies.forEach(movie => { %>
+            <% if (movie.list == list.id) { %>
+                <div>
+                    <h4><%= movie.title %></h4>
+                    <a href="/movies/<%= movie.id %>">View</a>
+                </div>
+            <% } %> 
+        <% }) %>
+        </div> 
+    </div>
+    <hr>
+<% }) %> 

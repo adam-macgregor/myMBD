@@ -1,0 +1,26 @@
+<label>Title</label>
+<input type="text" name="title" value="<%= movie.title %>">
+<label>Director</label>
+<input type="text" name="director" value="<%= movie.director %>">
+<br>
+<label>Genre</label>
+<input type="text" name="genre" value="<%= movie.genre %>">
+<label>Release Date</label>
+<input type="date" name="releaseDate" value="<%= movie.releaseDate == null ? '' : movie.releaseDate.toISOString().split('T')[0] %>">
+<br>
+<label>Movie image (URL)</label>
+<input type="text" name="imageUrl" value="<%= movie.imageUrl %>">
+<label>Summary</label>
+<input type="text" name="summary" value="<%= movie.summary %>">
+<br>
+<label>List</label>
+<select name="list">
+    <% lists.forEach(list => { %>
+        <% if(list.id === movie.list) { %>
+            <option selected label="<%= list.name %>" value="<%= list.id%>"></option>
+        <% } else { %>
+            <option label="<%= list.name %>" value="<%= list.id%>">
+        <% } %>
+    <% }) %>
+</select>
+<br>

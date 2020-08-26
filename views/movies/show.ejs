@@ -1,0 +1,11 @@
+<h2><%= movie.title %></h2>
+<p>
+    Directed by: <%= movie.director %> <br>
+    Release date: <%= movie.releaseDate.toISOString().split('T')[0] %> <br>
+    Genre: <%= movie.genre %> <br>
+    Summary: <%= movie.summary %> <br>
+    List: <%= movie.list.name %> 
+</p>
+<img src="<%= movie.imageUrl %>" alt="movie poster">
+<br>
+<%- include('../partials/deleteForm', { url: `/movies/${movie.id}`}) %>
