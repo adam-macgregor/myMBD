@@ -1,0 +1,55 @@
+:root {
+    --color-btn-border: black;
+    --color-btn-primary-text: hsl(var(--color-base-hue), 100%, 20%);
+    --color-btn-primary-text-dark: hsl(var(--color-base-hue), 100%, 10%);
+    --color-btn-primary-background: hsl(var(--color-base-hue), 100%, 83%);
+    --color-btn-primary-background-dark: hsl(var(--color-base-hue), 100%, 73%);
+    --color-btn-danger-text: black;
+    --color-btn-danger-text-dark: black;
+    --color-btn-danger-background: hsl(var(--color-danger-hue), 100%, 83%);
+    --color-btn-danger-background-dark: hsl(var(--color-danger-hue), 100%, 73%);
+}
+
+.btn {
+    font-size: 1.2rem;
+    font-family: 'Courier New', Courier, monospace;
+    cursor: pointer;
+    padding: .25rem .5rem;
+    text-decoration: none;
+    border-radius: .5rem;
+    border: 1px solid var(--color-btn-border);
+    text-align: center;
+}
+
+.btn-row {
+    display: flex;
+    align-items: flex-start;
+}
+
+.btn-row > * {
+    margin-left: 1rem;
+}
+
+.btn-row > *:first-child {
+    margin-left: 0;
+}
+
+.btn-primary {
+    background-color: var(--color-btn-primary-background);
+    color: var(--color-btn-primary-text);
+}
+
+.btn-danger {
+    background-color: var(--color-btn-danger-background);
+    color: var(--color-btn-danger-text);
+}
+
+.btn-primary:hover {
+    background-color: var(--color-btn-primary-background-dark);
+    color: var(--color-btn-primary-text-dark);
+}
+
+.btn-danger:hover {
+    background-color: var(--color-btn-danger-background-dark);
+    color: var(--color-btn-danger-text-dark);
+}

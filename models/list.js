@@ -10,19 +10,12 @@ const listSchema = new mongoose.Schema({
         type: Date,
         required: true,
         default: Date.now
+    },
+    movies: {
+        type: [mongoose.Schema.Types.ObjectId],
+        required: false,
+        ref: 'Movie'
     }
-})
-
-listSchema.pre('remove', function(next) {
-    Movie.find({ list: this.id }, (err, movies) => {
-        if(err) {
-            next(err)
-        } else if(movies.length > 0) {
-            next(new Error('This list has movies still'))
-        } else {
-            next()
-        }
-    })
 })
 
 module.exports = mongoose.model('List', listSchema)

@@ -1,14 +1,15 @@
-<h2><%= list.name %> </h2>
-<a href="/lists/<%= list.id %>/edit">Edit</a>
-<%- include('../partials/deleteForm',{ url: `/lists/${list.id}` }) %>
-<% if (moviesInList.length > 0 ) { %>
-    <h2>Movies</h2>
-    <% moviesInList.forEach(movie => { %>
-        <div>
-            <%= movie.title %> 
-            <a href="/movies/<%= movie.id %>">View</a>
-            <a href="/movies/<%= movie.id %>/edit">Edit</a>
-            <%- include('../partials/deleteForm', { url: `/movies/${movie.id}`}) %> 
+<h2  class="page-header"><%= list.name %> </h2>
+<div class="btn-row">
+    <a class="btn btn-primary" href="/lists/<%= list.id %>/edit">Edit</a>
+</div>
+<br>
+<br>
+<% movies.forEach(movie => { %>
+    <div>
+        <%= movie.title %>
+        <div class="btn-row">
+            <a class="btn btn-primary" href="/movies/<%= movie.id %>">View</a>
+            <a class="btn btn-primary" href="/movies/<%= movie.id %>/edit">Edit</a>    
         </div>
-    <% }) %> 
-<% } %>
+    </div>
+<% }) %>

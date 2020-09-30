@@ -1,6 +1,32 @@
-<h2>Edit movie list</h2>
+<h2 class="page-header"><%= list.name %></h2>
+<div class="form-row btn-row form-row-end">
+    <%- include('../partials/deleteForm', { url: `/lists/${list.id}`}) %>
+    <a class="btn btn-primary" href="/lists/<%= list.id %>/rename">Rename</a>
+    <a class="btn btn-primary" href="/lists/<%= list.id %> ">Done editing</a>
+</div>
+<form action="/lists/<%= list.id %>/remove?_method=PUT" method="POST">
+    <% moviesInList.forEach(movie => { %>
+        <div>
+            <label for="<%= movie.id %>"><%= movie.title %> </label>
+            <input type="checkbox" name="movies" value="<%= movie.id %>">
+        </div>
+    <% }) %>
+    <div class="form-row form-row-end btn-row">
+        <button class="btn btn-danger" type="submit">Remove selected from list</button>
+    </div>
+</form>
+<hr>
+<h2 class="page-header">Add movies</h2>
+<%- include('../partials/movieSearchForm', { url: `/lists/${list.id}/edit` }) %>
+<h2 class="page-header">Movies</h2>
 <form action="/lists/<%= list.id %>?_method=PUT" method="POST">
-    <%- include('_form_fields') %> 
-    <a href="/lists/<%= list.id %> ">Cancel</a>
-    <button type="submit">Update list</button>
+    <% moviesNotInList.forEach(movie => { %>
+        <div>
+            <label for="<%= movie.id %>"><%= movie.title %> </label>
+            <input type="checkbox" name="movies" value="<%= movie.id %>">
+        </div> 
+    <% }) %>
+    <div class="btn-row form-row form-row-end">
+        <button class="btn btn-primary" type="submit">Add selected to list</button>
+    </div>
 </form>

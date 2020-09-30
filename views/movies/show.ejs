@@ -1,11 +1,39 @@
-<h2><%= movie.title %></h2>
+<h2  class="page-header"><%= movie.title %></h2>
 <p>
     Directed by: <%= movie.director %> <br>
     Release date: <%= movie.releaseDate.toISOString().split('T')[0] %> <br>
     Genre: <%= movie.genre %> <br>
     Summary: <%= movie.summary %> <br>
-    List: <%= movie.list.name %> 
 </p>
 <img src="<%= movie.imageUrl %>" alt="movie poster">
 <br>
-<%- include('../partials/deleteForm', { url: `/movies/${movie.id}`}) %>
+<a class="btn btn-primary" href="/movies/<%= movie.id %>/edit">Edit</a> 
+<br>
+<%if(moreByDirector.length >= 1) { %> 
+    <hr>
+    <div>
+        <h2  class="page-header">More from this director: <%= movie.director %></h2>
+        <div> 
+        <% moreByDirector.forEach(movie => { %>
+            <div>
+                <h4><%= movie.title %></h4>
+                <a class="btn btn-primary" href="/movies/<%= movie.id %>">View</a>
+            </div>
+        <% }) %>
+        </div> 
+    </div>
+<% } %>
+<%if(moreByGenre.length >= 1) { %> 
+    <hr>
+    <div>
+        <h2  class="page-header">More from this genre: <%= movie.genre %></h2>
+        <div> 
+        <% moreByGenre.forEach(movie => { %>
+            <div>
+                <h4><%= movie.title %></h4>
+                <a class="btn btn-primary" href="/movies/<%= movie.id %>">View</a>
+            </div>
+        <% }) %>
+        </div> 
+    </div>
+<% } %>

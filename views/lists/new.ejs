@@ -1,6 +1,8 @@
-<h2>New movie list</h2>
+<h2  class="page-header">New movie list</h2>
 <form action="/lists" method="POST">
     <%- include('_form_fields') %> 
-    <a href="/lists">Cancel</a>
-    <button type="submit">Add list</button>
+    <div class="btn-row form-row form-row-end">
+        <a class="btn btn-primary" href="/lists">Cancel</a>
+        <button class="btn btn-primary" type="submit">Add list</button>
+    </div>
 </form>

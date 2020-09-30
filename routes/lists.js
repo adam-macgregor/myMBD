@@ -5,14 +5,13 @@ const Movie = require('../models/movie')
 
 // All lists
 router.get('/', async (req, res) => {
-
     let searchOptions = {}
     if(req.query.name != null && req.query.name !== ''){
         searchOptions.name = new RegExp(req.query.name, 'i')
     }
     try {
         const lists = await List.find(searchOptions)
-        res.render('lists/index', { 
+        res.render('lists/index', {
             lists: lists, 
             searchOptions: req.query 
         })
@@ -47,28 +46,104 @@ router.post('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
     try {
         const list = await List.findById(req.params.id)
-        const movies = await Movie.find({ list: list.id }).limit(5).exec()
+        const movies = await Movie.find({_id: {$in: list.movies}})
         res.render('lists/show', {
             list: list,
-            moviesInList: movies
+            movies: movies
         })
     } catch {
         res.redirect('/')
     }
 })
 
-// Edit list
+// Add/Remove movies
 router.get('/:id/edit', async (req, res) => {
     try {
         const list = await List.findById(req.params.id)
-        res.render('lists/edit', { list: list })
+        let query = Movie.find({_id: {$nin: list.movies}})
+        if(req.query.title != null && req.query.title !== ''){
+            query = query.regex('title', new RegExp(req.query.title, 'i'))
+        }
+        if(req.query.director != null && req.query.director !== ''){
+            query = query.regex('director', new RegExp(req.query.director, 'i'))
+        }
+        if(req.query.genre != null && req.query.genre !== ''){
+            query = query.regex('genre', new RegExp(req.query.genre, 'i'))
+        }
+        if(req.query.releasedAfter != null && req.query.releasedAfter !== ''){
+            query = query.gte('releaseDate', req.query.releasedAfter)
+        }
+        if(req.query.releasedBefore != null && req.query.releasedBefore !== ''){
+            query = query.lte('releaseDate', req.query.releasedBefore)
+        }
+        let moviesInList = await Movie.find({_id: {$in: list.movies}})
+        let moviesNotInList = await query.exec()
+        res.render('lists/edit', { 
+            list: list, 
+            moviesInList: moviesInList, 
+            moviesNotInList: moviesNotInList, 
+            searchOptions: req.query 
+        })
     } catch {
         res.redirect('/lists')
     }
 })
 
-// Update edited list
-router.put('/:id', async (req, res) => {
+// Update: Add movies to list
+router.put('/:id/', async (req, res) => {
+    let list
+    try {
+        list = await List.findById(req.params.id)
+        if(req.body.movies != null || req.body.movies != undefined) {
+            await list.updateOne({$push: {movies: req.body.movies}})
+            res.redirect(`/lists/${list.id}/edit`)
+        }
+    } catch {
+        if(list == null) {
+            res.redirect('/')
+        } else {
+            res.render('lists/edit', {
+                list: list,
+                errorMessage: 'Error updating list'
+            })
+        } 
+    }
+})
+
+// Update: Remove movies from list
+router.put('/:id/remove', async (req, res) => {
+    let list
+    try {
+        list = await List.findById(req.params.id)
+        if(req.body.movies != null || req.body.movies != undefined) {
+            await list.updateOne({$pull: {movies: {$in: req.body.movies}}})
+            res.redirect(`/lists/${list.id}/edit`)
+        }
+    } catch {
+        if(list == null) {
+            res.redirect('/')
+        } else {
+            res.render('lists/edit', {
+                list: list,
+                errorMessage: 'Error updating list'
+            })
+        } 
+    }
+})
+
+// Rename list get
+router.get('/:id/rename', async (req, res) => {
+    try {
+        const list = await List.findById(req.params.id)
+        res.render('lists/rename', { list: list })
+    } catch {
+        res.redirect('/lists')
+    }
+})
+
+
+// Rename list put
+router.put('/:id/rename', async (req, res) => {
     let list
     try {
         list = await List.findById(req.params.id)
@@ -79,7 +154,7 @@ router.put('/:id', async (req, res) => {
         if(list == null) {
             res.redirect('/')
         } else {
-            res.render('lists/edit', {
+            res.render('lists/rename', {
                 list: list,
                 errorMessage: 'Error updating list'
             })

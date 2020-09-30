@@ -1,0 +1,8 @@
+<h2  class="page-header">Rename movie list</h2>
+<form action="/lists/<%= list.id %>/rename?_method=PUT" method="POST">
+    <%- include('_form_fields') %> 
+    <div class="btn-row form-row form-row-end">
+        <a class="btn btn-primary" href="/lists/<%= list.id %> ">Cancel</a>
+        <button class="btn btn-primary" type="submit">Rename list</button>
+    </div>
+</form>

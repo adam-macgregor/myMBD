@@ -19,6 +19,7 @@ const movieSchema = new mongoose.Schema({
     },
     imageUrl: {
         type: String,
+        required: true
     },
     summary: {
         type: String
@@ -27,11 +28,6 @@ const movieSchema = new mongoose.Schema({
         type: Date,
         required: true,
         default: Date.now
-    },
-    list: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        ref: 'List'
     }
 })
 

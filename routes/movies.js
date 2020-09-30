@@ -5,26 +5,27 @@ const List = require('../models/list')
 
 // All movies
 router.get('/', async (req, res) => {
-    let searchOptions = {}
+    let query = Movie.find()
     if(req.query.title != null && req.query.title !== ''){
-        searchOptions.title = new RegExp(req.query.title, 'i')
+        query = query.regex('title', new RegExp(req.query.title, 'i'))
     }
     if(req.query.director != null && req.query.director !== ''){
-        searchOptions.director = new RegExp(req.query.director, 'i')
+        query = query.regex('director', new RegExp(req.query.director, 'i'))
     }
     if(req.query.genre != null && req.query.genre !== ''){
-        searchOptions.genre = new RegExp(req.query.genre, 'i')
+        query = query.regex('genre', new RegExp(req.query.genre, 'i'))
     }
-    /* if(req.query.releasedAfter != null && req.query.releasedAfter !== ''){
-        searchOptions.releasedAfter = new RegExp(req.query.tireleasedAftertle, 'i')
-    }if(req.query.releasedBefore != null && req.query.releasedBefore !== ''){
-        searchOptions.releasedBefore = new RegExp(req.query.releasedBefore, 'i')
-    } */
+    if(req.query.releasedAfter != null && req.query.releasedAfter !== ''){
+        query = query.gte('releaseDate', req.query.releasedAfter)
+    }
+    if(req.query.releasedBefore != null && req.query.releasedBefore !== ''){
+        query = query.lte('releaseDate', req.query.releasedBefore)
+    }
     try {
-        const movies = await Movie.find(searchOptions)
+        const movies = await query.exec()
         const lists = await List.find({})
         res.render('movies/index', { 
-            movies: movies, 
+            movies: movies,
             lists: lists,
             searchOptions: req.query 
         })
@@ -33,11 +34,10 @@ router.get('/', async (req, res) => {
     }
 })
 
-// New movie
+// New movie 
 router.get('/new', async (req, res) => {
     try{
-        const lists = await List.find({})
-        res.render('movies/new', { movie: new Movie(), lists: lists})
+        res.render('movies/new', { movie: new Movie() })
     } catch {
         res.redirect('/')
     }
@@ -51,8 +51,7 @@ router.post('/', async (req, res) => {
         genre: req.body.genre,
         releaseDate: req.body.releaseDate,
         imageUrl: req.body.imageUrl,
-        summary: req.body.summary,
-        list: req.body.list
+        summary: req.body.summary
     })
 
     try {
@@ -67,11 +66,16 @@ router.post('/', async (req, res) => {
 })
 
 router.get('/:id', async (req, res) => {
+    let query = Movie.find()
     try {
         const movie = await Movie.findById(req.params.id)
-                                        .populate('list')
-                                        .exec()
-        res.render('movies/show', { movie: movie })                    
+        const genres = await movie.genre.split(',')
+        const genreRegEx = genres.map(genre => {
+            return new RegExp(`${genre}`, 'i')
+        })
+        const moreByGenre = await Movie.find({genre: {$in: genreRegEx}, _id: {$ne: movie.id}})
+        const moreByDirector = await Movie.find({director: movie.director, _id: {$ne: movie.id}})
+        res.render('movies/show', { movie: movie, moreByDirector: moreByDirector, moreByGenre: moreByGenre })                    
     } catch {
         res.redirect('/')
     }
@@ -80,8 +84,7 @@ router.get('/:id', async (req, res) => {
 router.get('/:id/edit', async (req, res) => {
     try {
         const movie = await Movie.findById(req.params.id)
-        const lists = await List.find({})
-        res.render('movies/edit', { movie: movie, lists: lists })                    
+        res.render('movies/edit', { movie: movie })                    
     } catch {
         res.redirect('/')
     }
@@ -97,7 +100,6 @@ router.put('/:id', async (req, res) => {
         movie.releaseDate = req.body.releaseDate
         movie.imageUrl = req.body.imageUrl
         movie.summary = req.body.summary
-        movie.list = req.body.list
         await movie.save()
         res.redirect(`/movies/${movie.id}`)
     } catch (e) {
