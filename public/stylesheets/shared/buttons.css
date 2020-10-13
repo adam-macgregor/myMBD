@@ -23,15 +23,17 @@
 
 .btn-row {
     display: flex;
-    align-items: flex-start;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 1em;
 }
 
 .btn-row > * {
-    margin-left: 1rem;
+    margin-right: 1rem;
 }
 
-.btn-row > *:first-child {
-    margin-left: 0;
+.btn-row > *:last-child {
+    margin-right: 0;
 }
 
 .btn-primary {

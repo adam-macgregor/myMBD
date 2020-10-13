@@ -1,13 +1,11 @@
 <h2  class="page-header">Movies</h2>
 <%- include('../partials/movieSearchForm', { url: '/movies'}) %>
-<br>
-<br>
-<% movies.forEach(movie => { %>
-    <div>
-        <%= movie.title %>
-        <div class="btn-row">
-            <a class="btn btn-primary" href="/movies/<%= movie.id %>">View</a>
-            <a class="btn btn-primary" href="/movies/<%= movie.id %>/edit">Edit</a>    
-        </div>
-    </div>
+<div class="movie-container">
+    <% movies.forEach(item => { %>
+        <%- include('../partials/movie', { movie: item }) %>
+        <!-- <div class="btn-row">
+            <a class="btn btn-primary" href="/movies/<%= item.id %>">View</a>
+            <a class="btn btn-primary" href="/movies/<%= item.id %>/edit">Edit</a>    
+        </div> -->
 <% }) %>
+</div>

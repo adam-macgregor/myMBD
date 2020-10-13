@@ -5,12 +5,14 @@
     <a class="btn btn-primary" href="/lists/<%= list.id %> ">Done editing</a>
 </div>
 <form action="/lists/<%= list.id %>/remove?_method=PUT" method="POST">
-    <% moviesInList.forEach(movie => { %>
-        <div>
-            <label for="<%= movie.id %>"><%= movie.title %> </label>
-            <input type="checkbox" name="movies" value="<%= movie.id %>">
-        </div>
-    <% }) %>
+    <div class="movie-container">
+        <% moviesInList.forEach(item => { %>
+            <input class="checkbox" type="checkbox" name="movies" id="<%= item.id %>" value="<%= item.id %>">
+            <label for="<%= item.id %>">
+                <%- include('../partials/movieList', { movie: item }) %>
+            </label>
+        <% }) %>
+    </div>
     <div class="form-row form-row-end btn-row">
         <button class="btn btn-danger" type="submit">Remove selected from list</button>
     </div>
@@ -20,12 +22,14 @@
 <%- include('../partials/movieSearchForm', { url: `/lists/${list.id}/edit` }) %>
 <h2 class="page-header">Movies</h2>
 <form action="/lists/<%= list.id %>?_method=PUT" method="POST">
-    <% moviesNotInList.forEach(movie => { %>
-        <div>
-            <label for="<%= movie.id %>"><%= movie.title %> </label>
-            <input type="checkbox" name="movies" value="<%= movie.id %>">
-        </div> 
-    <% }) %>
+    <div class="movie-container">
+        <% moviesNotInList.forEach(item => { %>
+            <input class="checkbox" type="checkbox" name="movies" id="<%= item.id %>" value="<%= item.id %>">
+            <label for="<%= item.id %>">
+                <%- include('../partials/movieList', { movie: item }) %>
+            </label>
+        <% }) %>
+    </div>
     <div class="btn-row form-row form-row-end">
         <button class="btn btn-primary" type="submit">Add selected to list</button>
     </div>

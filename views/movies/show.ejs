@@ -7,18 +7,17 @@
 </p>
 <img src="<%= movie.imageUrl %>" alt="movie poster">
 <br>
-<a class="btn btn-primary" href="/movies/<%= movie.id %>/edit">Edit</a> 
+<div class="btn-row">
+    <a class="btn btn-primary" href="/movies/<%= movie.id %>/edit">Edit</a> 
+</div>
 <br>
 <%if(moreByDirector.length >= 1) { %> 
     <hr>
     <div>
         <h2  class="page-header">More from this director: <%= movie.director %></h2>
-        <div> 
-        <% moreByDirector.forEach(movie => { %>
-            <div>
-                <h4><%= movie.title %></h4>
-                <a class="btn btn-primary" href="/movies/<%= movie.id %>">View</a>
-            </div>
+        <div class="movie-container"> 
+        <% moreByDirector.forEach(item => { %>
+            <%- include('../partials/movie', { movie: item }) %> 
         <% }) %>
         </div> 
     </div>
@@ -27,12 +26,9 @@
     <hr>
     <div>
         <h2  class="page-header">More from this genre: <%= movie.genre %></h2>
-        <div> 
-        <% moreByGenre.forEach(movie => { %>
-            <div>
-                <h4><%= movie.title %></h4>
-                <a class="btn btn-primary" href="/movies/<%= movie.id %>">View</a>
-            </div>
+        <div class="movie-container"> 
+        <% moreByGenre.forEach(item => { %>
+            <%- include('../partials/movie', { movie: item }) %> 
         <% }) %>
         </div> 
     </div>

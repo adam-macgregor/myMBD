@@ -1,14 +1,12 @@
 <% if(recentlyAddedMovies.length >= 1) { %> 
     <div>
         <h2 class="page-header">Recently Added Movies</h2>
-        <div> 
+        <div class="movie-container"> 
         <% recentlyAddedMovies.forEach(recentMovie => { %>
-            <div>
-                <h4><%= recentMovie.title %></h4>
-                <div class="btn-row">
+                <%- include('partials/movie', { movie: recentMovie }) %>
+                <!-- <div class="btn-row">
                     <a class="btn btn-primary" href="/movies/<%= recentMovie.id %>">View</a>
-                </div>
-            </div>
+                </div> -->
         <% }) %>
         </div> 
         <hr>

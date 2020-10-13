@@ -1,0 +1,26 @@
+.list-container {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.list-item {
+    display: flex;
+    margin: 1em;
+    justify-content: space-between;
+    align-items: center;
+    padding: .2em;
+}
+
+.list-title {
+    cursor: pointer;
+    text-decoration: none;
+    color: var(--color-text-light);
+    font-size: 35px;
+    width: 100%;
+}
+
+.list-item:hover {
+    background-color: rgba(0, 0, 0, .15);
+    border-radius: 10px;
+}

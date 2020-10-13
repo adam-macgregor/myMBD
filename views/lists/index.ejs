@@ -11,10 +11,11 @@
     </div>
 </form>
 <h2 class="page-header">Lists</h2>
-<% lists.forEach( list => { %>
-    <div>
-        <%= list.name %>
-        <a class="btn btn-primary" href="/lists/<%= list.id %>">View</a>
-        <a class="btn btn-primary" href="/lists/<%= list.id %>/edit">Edit</a>
-    </div>
-<% }) %>
+<ul class="list-container">
+    <% lists.forEach( list => { %>
+        <li class="list-item">
+            <a class="list-title" href="/lists/<%= list.id %>"><%= list.name %></a>
+            <a class="btn btn-primary" href="/lists/<%= list.id %>/edit">Edit</a>
+        </li>
+    <% }) %>
+</ul>
